@@ -19,13 +19,29 @@ on Firefox 4 using [teleport] or using [jetpack].
 
 # What works so far #
 
-    var { defer, print } = require('meta-promise')
-    var deferred = defer()
-    print(deferred.promise.foo.bar.name) // Special print that prints when promise is resolved
-    setTimeout(function() { // use require('timer').setTimeout on jetpack
-      deferred.resolve({ foo: { bar: { name: 'Hello meta-promise!' } } })
+    var mp = require('meta-promise')
+    // In teleport please run following seperately from first line.
+    if ('undefined' == typeof setTimeout)
+      var setTimeout = require('timer').setTimeout
+    var deferred = mp.defer()
+    var promise = deferred.promise // Promise that can be shared with consumers.
+    // `mp.print` takes promise and prints it when promise is fullfilled.
+    mp.print(promise.some.object.message)
+    mp.print(promise.some.object.talk('meta-promise'))
+    setTimeout(function() {
+      deferred.resolve(
+      { some:
+        { object:
+          { message: 'Hello {{name}} !'
+          , talk: function talk(name) {
+              return this.message.replace('{{name}}', name);
+            }
+          }
+        }
+      })
     }, 100)
-    // you will see 'Hello meta-promise!' in 100ms
+    // 'Hello {{name}} !' will be printed in 100ms.
+    // 'Hello meta-promise !' will be printed in 100ms.
 
 [ES Harmony Proxies]:http://wiki.ecmascript.org/doku.php?id=harmony:proxies
 [teleport]:http://jeditoolkit.com/teleport/#guide
