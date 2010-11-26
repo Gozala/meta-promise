@@ -28,6 +28,13 @@ on Firefox 4 using [teleport] or using [jetpack].
     // `mp.print` takes promise and prints it when promise is fullfilled.
     mp.print(promise.some.object.message)
     mp.print(promise.some.object.talk('meta-promise'))
+    mp.print(promise.some.object.talk.apply({
+      message: 'You can also use apply with {{name}}'
+    }, ['meta-promise']))
+    mp.print(promise.some.object.talk.apply({
+      message: 'You can also use call with {{name}}'
+    }, ['meta-promise']))
+
     setTimeout(function() {
       deferred.resolve(
       { some:
@@ -42,6 +49,8 @@ on Firefox 4 using [teleport] or using [jetpack].
     }, 100)
     // 'Hello {{name}} !' will be printed in 100ms.
     // 'Hello meta-promise !' will be printed in 100ms.
+    // 'You can also use apply with meta-promise'
+    // 'You can also use call with meta-promise'
 
 [ES Harmony Proxies]:http://wiki.ecmascript.org/doku.php?id=harmony:proxies
 [teleport]:http://jeditoolkit.com/teleport/#guide
